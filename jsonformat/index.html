@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="utf-8" />
+<title>EIGEWU</title>
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+<!-- bootstrap & fontawesome -->
+<!--
+<link rel="stylesheet" href="/assets/bootstrap/3.3.6/css/bootstrap.min.css" />
+-->
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css" />
+
+<style type="text/css">
+/* CSS Document */
+.jf-ObjectBrace {
+    color: #00AA00;
+    font-weight: bold;
+}
+.jf-ArrayBrace {
+    color: #0033FF;
+    font-weight: bold;
+}
+.jf-PropertyName {
+    color: #CC0000;
+    font-weight: bold;
+}
+.jf-String {
+    color: #007777;
+}
+.jf-Number {
+    color: #AA00AA;
+}
+.jf-Boolean {
+    color: #0000FF;
+}
+.jf-Null {
+    color: #0000FF;
+}
+.jf-Comma {
+    color: #000000;
+    font-weight: bold;
+}
+pre.jf-CodeContainer {
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.center, .align-center {
+    text-align: center!important;
+}
+
+.page-header{margin:0 0 12px;border-bottom:1px dotted #e2e2e2;padding-bottom:16px;padding-top:7px}
+.page-header h1{padding:0;margin:0 8px;font-size:24px;font-weight:lighter;color:#2679b5}
+.page-header h1 small{margin:0 6px;font-size:14px;font-weight:400;color:#8089a0}
+
+.widget-box{padding:0;-webkit-box-shadow:none;box-shadow:none;margin:3px 0;border:1px solid #CCC}
+.widget-header{-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;position:relative;min-height:38px;background:#f7f7f7;background-image:-webkit-linear-gradient(top,#fff 0,#eee 100%);background-image:-o-linear-gradient(top,#fff 0,#eee 100%);background-image:linear-gradient(to bottom,#fff 0,#eee 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffeeeeee', GradientType=0);color:#669fc7;border-bottom:1px solid #DDD;padding-left:12px}
+.widget-header>.widget-title{line-height:36px;padding:0;margin:0;display:inline}
+.widget-body{background-color:#FFF}
+.widget-main{padding:12px}
+
+.json-btns{
+    display: block;
+    margin: 20px auto;
+}
+#ControlBar{
+    display: none;
+    padding-left: 10px;
+}
+#IndentRatio{
+    height: 20px;
+    width: 36px;
+    padding: 0;
+}
+</style>
+</head>
+<body>
+<div class="page-header">
+    <h1> JSON格式化
+        <small> <i class="ace-icon fa fa-angle-double-right"></i> 根据内容生成JSON格式化视图 </small>
+    </h1>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h4 class="widget-title">生成JSON内容</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <textarea class="form-control" rows="10" id="json-content" placeholder="请输入JSON内容"></textarea>
+                        </div>
+                        <div class="center json-btns">
+                            <button type="button" class="btn btn-lg btn-success" id="json-btn">生成JSON视图</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-8">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h4 class="widget-title">生成结果</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="padding:0;">
+                            <div class="form-inline" id="ControlBar">
+                                <div class="form-group">
+                                    <label class="control-label">缩进量</label>
+                                    <select class="form-control" id="IndentRatio">
+                                        <option value="1">1</option>
+                                        <option value="2" selected="selected">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="checkbox" id="QuoteKeys" checked="checked" />
+                                    <label class="control-label" for="QuoteKeys">引号</label>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="checkbox" id="CollapsibleView" checked="checked" />
+                                    <label class="control-label" for="CollapsibleView">显示控制</label>
+                                </div>
+                                <div class="form-group" id="CollapsibleViewDetail">
+                                    <a href="javascript:void(0);" class="expand" data-level="-1">展开</a>
+                                    <a href="javascript:void(0);" class="expand" data-level="0">叠起</a>
+                                    <a href="javascript:void(0);" class="expand" data-level="3">2级</a>
+                                    <a href="javascript:void(0);" class="expand" data-level="4">3级</a>
+                                    <a href="javascript:void(0);" class="expand" data-level="5">4级</a>
+                                    <a href="javascript:void(0);" class="expand" data-level="6">5级</a>
+                                    <a href="javascript:void(0);" class="expand" data-level="7">6级</a>
+                                    <a href="javascript:void(0);" class="expand" data-level="8">7级</a>
+                                    <a href="javascript:void(0);" class="expand" data-level="9">8级</a>
+                                </div>
+                            </div>
+                            <div id="json-show"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+<script src="/js/libs/jquery/jquery-2.2.1.min.js"></script>
+<script src="/assets/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+-->
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jsonFormater.js"></script>
+<script type="text/javascript" src="js/jsonformat.js"></script>
+</body>
+</html>
